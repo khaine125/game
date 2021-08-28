@@ -1,6 +1,6 @@
-function Score() {
+function Score({ value }) {
   return (
-    <div>Score</div>
+    <div>{`Score: ${ value }`}</div>
   );
 }
 

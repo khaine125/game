@@ -1,6 +1,8 @@
-function Mole() {
+import * as moleConstants from '../../utils/constants/mole.constants';
+
+function Mole({ onWhack }) {
   return (
-    <div>Mole</div>
+    <button onClick={() => onWhack(moleConstants.MOLE_SCORE)}>Mole</button>
   );
 }
 
