@@ -1,12 +1,10 @@
 * {
   box-sizing: border-box;
 }
-
 :root {
   --control: #e69119;
   --color: #fff;
 }
-
 button {
   background: var(--control);
   color: var(--color);
@@ -16,7 +14,6 @@ button {
   font-family: 'Fredoka One', cursive;
   font-size: 1.2rem;
 }
-
 body {
   background: linear-gradient(#d1e9fa 0 40%, #86c270 40%);
   min-height: 100vh;
@@ -24,4 +21,31 @@ body {
   align-items: center;
   justify-content: center;
   font-family: 'Fredoka One', cursive;
+}
+
+.end-game {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}
+
+.mole {
+  display: none;
+}
+
+.mole-hole {
+  overflow: hidden;
+}
+
+.moles {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(2, auto);
+  align-items: center;
+}
+
+.moles > *:nth-of-type(4),
+.moles > *:nth-of-type(5) {
+  transform: translate(50%, 0)
 }
