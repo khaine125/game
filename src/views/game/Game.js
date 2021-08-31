@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { Mole, Score, Timer } from '../../components';
 import * as timerConstants from '../../utils/constants/timer.constants';
@@ -7,10 +7,26 @@ import './Game.css';
 
 const Moles = ({ children }) => <div className="moles">{children}</div>;
 
+const usePersistentState = (key, initialValue) => {
+  const [state, setState] = useState(
+    window.localStorage.getItem(key) ?
+    JSON.parse(window.localStorage.getItem(key)) :
+    initialValue
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem(key, state)
+  }, [key, state]);
+
+  return [state, setState];
+};
+
 function Game() {
   const [playing, setPlaying] = useState(false);
   const [finished, setFinished] = useState(false);
   const [score, setScore] = useState(0);
+  const [hightScore, setHightScore] = usePersistentState('whac-high-score', 0);
+  const [newHighScore, setNewHighScore] = useState(false);
 
   const onWhack = points => setScore(score + points);
 
@@ -23,15 +39,20 @@ function Game() {
   const [moles, setMoles] = useState(generateMoles());
 
   const endGame = () => {
-    setPlaying(false)
-    setFinished(true)
+    setPlaying(false);
+    setFinished(true);
+
+    if (score > hightScore) {
+      setHightScore(score);
+      setNewHighScore(true);
+    }
   };
 
   const startGame = () => {
-    setScore(0)
-    setMoles(generateMoles())
-    setPlaying(true)
-    setFinished(false)
+    setScore(0);
+    setMoles(generateMoles());
+    setPlaying(true);
+    setFinished(false);
   };
 
   return (
@@ -71,10 +92,13 @@ function Game() {
         </Fragment>
       )}
       {finished &&
-      <Fragment>
-        <Score value={score} />
-        <button onClick={startGame}>Play again</button>
-      </Fragment>
+        <Fragment>
+          {newHighScore &&
+            <div className='info-text'>NEW High Score!</div>
+          }
+          <Score value={score} />
+          <button onClick={startGame}>Play again</button>
+        </Fragment>
       }
     </Fragment>
   );
